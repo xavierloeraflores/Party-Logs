@@ -17,10 +17,10 @@ const Home: NextPage = () => {
     const res = await fetch(
       "http://fsa-async-await.herokuapp.com/api/workshop/parties",
       {
-        mode: "no-cors",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
           name,
