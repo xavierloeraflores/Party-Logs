@@ -1,8 +1,43 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
 
 const Home: NextPage = () => {
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [returned, setReturned] = useState("");
+  const handleSubmit = () => {
+    void submit();
+  };
+  const submit = async () => {
+    const res = await fetch(
+      "http://fsa-async-await.herokuapp.com/api/workshop/parties",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          date: new Date().toISOString(),
+          time: new Date().toLocaleTimeString("it-IT"),
+          location,
+          description,
+        }),
+      }
+    );
+    if (res.status === 200) {
+      const data = await res.json();
+      console.log(data);
+      setReturned(`Party ${data.name} created!`);
+    } else {
+      setReturned("Error");
+    }
+  };
+
   return (
     <>
       <Head>
@@ -13,31 +48,40 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+            Party <span className="text-[hsl(280,100%,70%)]">Logs</span> App
           </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
+          <div className=" flex h-96 flex-col justify-around">
+            <input
+              className="input h-16 w-80 p-4"
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              className="input input h-16 w-80 p-4"
+              type="text"
+              placeholder="Location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+            <input
+              className="input input h-16 w-80 p-4"
+              type="text"
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <button
+              className="btn input h-16 w-80 bg-white p-4 text-black"
+              onClick={handleSubmit}
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
+              Submit
+            </button>
+            <h3 className="text-2xl font-extrabold tracking-tight text-white sm:text-[2rem]">
+              {" "}
+              {returned}
+            </h3>
           </div>
         </div>
       </main>
