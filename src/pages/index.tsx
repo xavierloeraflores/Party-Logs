@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   };
   const submit = async () => {
     const res = await fetch(
-      "http://fsa-async-await.herokuapp.com/api/workshop/parties",
+      "https://fsa-async-await.herokuapp.com/api/workshop/parties",
       {
         method: "POST",
         headers: {
