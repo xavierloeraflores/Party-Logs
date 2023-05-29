@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type NextPage } from "next";
 import Head from "next/head";
@@ -32,6 +33,7 @@ const Home: NextPage = () => {
     if (res.status === 200) {
       const data = await res.json();
       console.log(data);
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       setReturned(`Party ${data.name} created!`);
     } else {
       setReturned("Error");
